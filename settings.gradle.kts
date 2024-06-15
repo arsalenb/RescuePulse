@@ -20,6 +20,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "RescuePulse"
-include(":app")
 include(":mobile")
 include(":wear")

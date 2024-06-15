@@ -24,10 +24,10 @@
             android:value="true" />
 
         <activity
-            android:name=".presentation.WacthMainActivity"
+            android:name=".presentation.WearMainActivity"
             android:exported="true"
             android:taskAffinity=""
-            android:theme="@style/WacthMainActivityTheme.Starting">
+            android:theme="@style/WearMainActivityTheme.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

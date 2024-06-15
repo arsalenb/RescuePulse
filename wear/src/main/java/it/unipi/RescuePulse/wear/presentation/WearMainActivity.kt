@@ -27,7 +27,7 @@ import androidx.wear.compose.material.TimeText
 import it.unipi.RescuePulse.wear.R
 import it.unipi.RescuePulse.wear.presentation.theme.RescuePulseTheme
 
-class WacthMainActivity : ComponentActivity() {
+class WearMainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
