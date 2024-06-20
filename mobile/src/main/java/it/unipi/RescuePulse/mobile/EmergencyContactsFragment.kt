@@ -1,17 +1,36 @@
 package it.unipi.RescuePulse.mobile
 
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 
 class EmergencyContactsFragment : Fragment() {
 
     private val selectedContacts = mutableListOf<String>()
+    private lateinit var emergencyContactsList: LinearLayout
+    private lateinit var buttonAddEmergencyContact: ImageButton
+    private lateinit var emergencyServicesSpinner: Spinner
+
+    // ActivityResultLauncher to pick a contact
+    private val pickContactLauncher = registerForActivityResult(ActivityResultContracts.PickContact()) { contactUri ->
+        contactUri ?: return@registerForActivityResult
+        // Handle contact selection (e.g., retrieve contact name and add to selectedContacts)
+        val contactName = retrieveContactName(contactUri)
+        if (!selectedContacts.contains(contactName)) {
+            selectedContacts.add(contactName)
+            addEmergencyContactView(emergencyContactsList, contactName)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,8 +38,15 @@ class EmergencyContactsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_emergency_contacts, container, false)
 
-        val emergencyContactsList: LinearLayout = view.findViewById(R.id.emergency_contacts_list)
-        val buttonAddEmergencyContact: ImageButton = view.findViewById(R.id.button_add_emergency_contact)
+        emergencyContactsList = view.findViewById(R.id.emergency_contacts_list)
+        buttonAddEmergencyContact = view.findViewById(R.id.button_add_emergency_contact)
+        emergencyServicesSpinner = view.findViewById(R.id.emergency_services_spinner)
+
+        // Set up the emergency services spinner
+        val emergencyServices = resources.getStringArray(R.array.emergency_services)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, emergencyServices)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        emergencyServicesSpinner.adapter = adapter
 
         // Add existing selected contacts (placeholder)
         selectedContacts.forEach { contactName ->
@@ -28,9 +54,7 @@ class EmergencyContactsFragment : Fragment() {
         }
 
         buttonAddEmergencyContact.setOnClickListener {
-            val newContactName = "New Contact ${selectedContacts.size + 1}"
-            selectedContacts.add(newContactName)
-            addEmergencyContactView(emergencyContactsList, newContactName)
+            pickContactLauncher.launch(null)
         }
 
         return view
@@ -49,5 +73,16 @@ class EmergencyContactsFragment : Fragment() {
         }
 
         parentLayout.addView(contactView)
+    }
+
+    private fun retrieveContactName(contactUri: Uri): String {
+        val cursor = requireActivity().contentResolver.query(contactUri, null, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val nameIndex = it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+                return it.getString(nameIndex)
+            }
+        }
+        return ""
     }
 }

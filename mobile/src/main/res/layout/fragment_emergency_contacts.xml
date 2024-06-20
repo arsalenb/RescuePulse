@@ -16,13 +16,12 @@
         android:textStyle="bold" />
 
     <!-- Spinner for Emergency Services -->
-
     <!-- Label for Emergency Contacts -->
 
     <Spinner
         android:id="@+id/emergency_services_spinner"
-        android:layout_width="381dp"
-        android:layout_height="47dp"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
         android:layout_marginBottom="16dp" />
 
     <TextView
