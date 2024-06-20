@@ -51,7 +51,7 @@
         <ImageButton
             android:id="@+id/button_add_emergency_contact"
             android:layout_width="51dp"
-            android:layout_height="65dp"
+            android:layout_height="39dp"
             android:background="?attr/selectableItemBackground"
             android:contentDescription="Add Emergency Contact"
             android:padding="8dp"

@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 class EmergencyContactsFragment : Fragment() {
 
-    private val selectedContacts = mutableListOf<String>() // Placeholder for selected contacts
+    private val selectedContacts = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,8 +28,9 @@ class EmergencyContactsFragment : Fragment() {
         }
 
         buttonAddEmergencyContact.setOnClickListener {
-            // Implement logic to add new emergency contact (e.g., open contact picker dialog)
-            Toast.makeText(requireContext(), "Implement logic to add new emergency contact", Toast.LENGTH_SHORT).show()
+            val newContactName = "New Contact ${selectedContacts.size + 1}"
+            selectedContacts.add(newContactName)
+            addEmergencyContactView(emergencyContactsList, newContactName)
         }
 
         return view
@@ -40,9 +43,9 @@ class EmergencyContactsFragment : Fragment() {
 
         contactNameTextView.text = contactName
         deleteButton.setOnClickListener {
-            // Implement logic to remove contact from selectedContacts list and remove view from parentLayout
-            parentLayout.removeView(contactView)
+            // Remove the contact from the list and the view
             selectedContacts.remove(contactName)
+            parentLayout.removeView(contactView)
         }
 
         parentLayout.addView(contactView)
