@@ -1,6 +1,9 @@
 package it.unipi.RescuePulse.mobile
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,16 +20,10 @@ class MobileMainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            RescuePulseTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
+        setContentView(R.layout.activity_main)
+        val stateTextView:TextView=findViewById(R.id.appState)
+        val button: Button = findViewById(R.id.button_change_state)
+        button.setOnClickListener({view -> stateTextView.text="Emergency Routine Initiated!"})
     }
 }
 
