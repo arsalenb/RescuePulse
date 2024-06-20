@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Rescue Pulse</string>
+    <string-array name="emergency_services">
+        <item>Police</item>
+        <item>Fire Department</item>
+        <item>Ambulance</item>
+    </string-array>
 </resources>

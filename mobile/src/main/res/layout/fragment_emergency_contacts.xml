@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Label for Emergency Services -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Emergency Services"
+        android:textColor="#FF0000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Spinner for Emergency Services -->
+
+    <!-- Label for Emergency Contacts -->
+
+    <Spinner
+        android:id="@+id/emergency_services_spinner"
+        android:layout_width="381dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Emergency Contacts"
+        android:textColor="#FF0303"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- List-like UI for selected Emergency Contacts -->
+    <LinearLayout
+        android:id="@+id/emergency_contacts_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+
+    <!-- Button to add new Emergency Contact -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/button_add_emergency_contact"
+            android:layout_width="51dp"
+            android:layout_height="65dp"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="Add Emergency Contact"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_add" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Add Emergency Contact"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
