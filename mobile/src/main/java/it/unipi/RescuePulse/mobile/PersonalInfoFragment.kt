@@ -1,11 +1,12 @@
 package it.unipi.RescuePulse.mobile
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import java.text.SimpleDateFormat
@@ -15,6 +16,10 @@ class PersonalInfoFragment : Fragment() {
     private lateinit var inputDob: EditText
     private lateinit var calendar: Calendar
 
+    private lateinit var nameEditText: EditText
+    private lateinit var surnameEditText: EditText
+    private lateinit var dobEditText: EditText
+    private lateinit var weightEditText: EditText
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,12 +33,17 @@ class PersonalInfoFragment : Fragment() {
 
         calendar = Calendar.getInstance()
 
+        nameEditText = view.findViewById(R.id.input_name)
+        surnameEditText = view.findViewById(R.id.input_surname)
+        dobEditText = inputDob
+        weightEditText = view.findViewById(R.id.input_weight)
+
         return view
     }
 
     private fun showDatePicker() {
         val datePicker = DatePickerDialog(
-            requireContext(), DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            requireContext(), { _, year, monthOfYear, dayOfMonth ->
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, monthOfYear)
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -51,5 +61,21 @@ class PersonalInfoFragment : Fragment() {
         val myFormat = "dd/MM/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
         inputDob.setText(sdf.format(calendar.time))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        savePersonalInformation()
+    }
+
+    private fun savePersonalInformation() {
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        editor.putString("name", nameEditText.text.toString())
+        editor.putString("surname", surnameEditText.text.toString())
+        editor.putString("dob", dobEditText.text.toString())
+        editor.putInt("weight", weightEditText.text.toString().toInt())
+        editor.apply()
     }
 }

@@ -23,9 +23,9 @@ class PostSetupActivity : AppCompatActivity() {
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
 
-        nameTextView.text = sharedPreferences.getString("name", "")
-        surnameTextView.text = sharedPreferences.getString("surname", "")
-        dobTextView.text = sharedPreferences.getString("dob", "")
-        weightTextView.text = sharedPreferences.getInt("weight", 0).toString()
+        nameTextView.text = "Name: ${sharedPreferences.getString("name", "")}"
+        surnameTextView.text = "Surname: ${sharedPreferences.getString("surname", "")}"
+        dobTextView.text = "Date of Birth: ${sharedPreferences.getString("dob", "")}"
+        weightTextView.text = "Weight: ${sharedPreferences.getInt("weight", 0)} kg"
     }
 }

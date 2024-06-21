@@ -14,6 +14,7 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: SetupPagerAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setup)
@@ -32,11 +33,13 @@ class SetupActivity : AppCompatActivity() {
             }
         }.attach()
 
+
         val buttonFinish: Button = findViewById(R.id.button_finish)
         buttonFinish.setOnClickListener {
-            // Handle finish button click
-            val intent = Intent(this, MobileMainActivity::class.java)
+            // Navigate to PostSetupActivity
+            val intent = Intent(this, PostSetupActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

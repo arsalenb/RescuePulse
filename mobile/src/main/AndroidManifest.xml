@@ -28,6 +28,11 @@
             android:name=".SetupActivity"
             android:theme="@style/AppTheme" />
 
+        <!-- Post Setup Activity -->
+        <activity
+            android:name=".PostSetupActivity"
+            android:theme="@style/AppTheme" />
+
     </application>
 
 </manifest>
