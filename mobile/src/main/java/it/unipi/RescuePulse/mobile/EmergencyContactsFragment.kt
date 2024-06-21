@@ -1,5 +1,6 @@
 package it.unipi.RescuePulse.mobile
 
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Spinner
@@ -19,7 +21,7 @@ class EmergencyContactsFragment : Fragment() {
     private val selectedContacts = mutableListOf<String>()
     private lateinit var emergencyContactsList: LinearLayout
     private lateinit var buttonAddEmergencyContact: ImageButton
-    private lateinit var emergencyServicesSpinner: Spinner
+    private lateinit var emergencyServiceNumber: EditText
 
     // ActivityResultLauncher to pick a contact
     private val pickContactLauncher = registerForActivityResult(ActivityResultContracts.PickContact()) { contactUri ->
@@ -29,6 +31,8 @@ class EmergencyContactsFragment : Fragment() {
         if (!selectedContacts.contains(contactName)) {
             selectedContacts.add(contactName)
             addEmergencyContactView(emergencyContactsList, contactName)
+            saveEmergencyContacts()
+
         }
     }
 
@@ -40,13 +44,7 @@ class EmergencyContactsFragment : Fragment() {
 
         emergencyContactsList = view.findViewById(R.id.emergency_contacts_list)
         buttonAddEmergencyContact = view.findViewById(R.id.button_add_emergency_contact)
-        emergencyServicesSpinner = view.findViewById(R.id.emergency_services_spinner)
-
-        // Set up the emergency services spinner
-        val emergencyServices = resources.getStringArray(R.array.emergency_services)
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, emergencyServices)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        emergencyServicesSpinner.adapter = adapter
+        emergencyServiceNumber = view.findViewById(R.id.emergency_service_number)
 
         // Add existing selected contacts (placeholder)
         selectedContacts.forEach { contactName ->
@@ -56,6 +54,9 @@ class EmergencyContactsFragment : Fragment() {
         buttonAddEmergencyContact.setOnClickListener {
             pickContactLauncher.launch(null)
         }
+
+        loadEmergencyContacts()
+        loadEmergencyServiceNumber()
 
         return view
     }
@@ -70,6 +71,8 @@ class EmergencyContactsFragment : Fragment() {
             // Remove the contact from the list and the view
             selectedContacts.remove(contactName)
             parentLayout.removeView(contactView)
+            saveEmergencyContacts()
+
         }
 
         parentLayout.addView(contactView)
@@ -84,5 +87,37 @@ class EmergencyContactsFragment : Fragment() {
             }
         }
         return ""
+    }
+
+    private fun saveEmergencyContacts() {
+        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putStringSet("emergency_contacts", selectedContacts.toSet())
+        editor.apply()
+    }
+
+    private fun loadEmergencyContacts() {
+        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
+        val contacts = sharedPreferences.getStringSet("emergency_contacts", emptySet()) ?: emptySet()
+        selectedContacts.clear()
+        selectedContacts.addAll(contacts)
+        selectedContacts.forEach { addEmergencyContactView(emergencyContactsList, it) }
+    }
+    private fun saveEmergencyServiceNumber() {
+        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("emergency_service_number", emergencyServiceNumber.text.toString())
+        editor.apply()
+    }
+
+    private fun loadEmergencyServiceNumber() {
+        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
+        val serviceNumber = sharedPreferences.getString("emergency_service_number", "")
+        emergencyServiceNumber.setText(serviceNumber)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveEmergencyServiceNumber()
     }
 }

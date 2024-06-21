@@ -9,25 +9,47 @@
         android:id="@+id/text_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name: " />
+        android:text="Name: "
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/text_surname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Surname: " />
+        android:text="Surname: "
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/text_dob"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date of Birth: " />
+        android:text="Date of Birth: "
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/text_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Weight: " />
+        android:text="Weight: "
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/text_emergency_service_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Emergency Service Number: "
+        android:textStyle="bold" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Emergency Contacts:"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout
+        android:id="@+id/emergency_contacts_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 </LinearLayout>
