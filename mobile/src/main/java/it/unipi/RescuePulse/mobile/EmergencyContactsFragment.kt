@@ -19,10 +19,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import it.unipi.RescuePulse.mobile.model.Contact
+import it.unipi.RescuePulse.mobile.model.SharedViewModel
+import androidx.fragment.app.activityViewModels
+
 
 class EmergencyContactsFragment : Fragment() {
 
-    private val selectedContacts: MutableList<Contact> = mutableListOf()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var emergencyContactsList: LinearLayout
     private lateinit var buttonAddEmergencyContact: ImageButton
     private lateinit var emergencyServiceNumber: EditText
@@ -61,9 +64,17 @@ class EmergencyContactsFragment : Fragment() {
         buttonAddEmergencyContact = view.findViewById(R.id.button_add_emergency_contact)
         emergencyServiceNumber = view.findViewById(R.id.emergency_service_number)
 
-        // Add existing selected contacts (placeholder)
-        selectedContacts.forEach { contact ->
-            addEmergencyContactView(emergencyContactsList, contact.displayName, contact.phoneNumber)
+        // Add existing selected contacts
+        sharedViewModel.selectedContacts.observe(viewLifecycleOwner) { contacts ->
+            emergencyContactsList.removeAllViews()
+            contacts.forEach { contact ->
+                addEmergencyContactView(emergencyContactsList, contact.displayName, contact.phoneNumber)
+            }
+        }
+
+        // Load existing emergency service number
+        sharedViewModel.emergencyServiceNumber.observe(viewLifecycleOwner) { number ->
+            emergencyServiceNumber.setText(number)
         }
 
         buttonAddEmergencyContact.setOnClickListener {
@@ -74,15 +85,12 @@ class EmergencyContactsFragment : Fragment() {
             }
         }
 
-        loadEmergencyContacts()
-        loadEmergencyServiceNumber()
 
         return view
     }
 
     private fun addEmergencyContactView(parentLayout: LinearLayout, contactName: String, phoneNumber: String?) {
         val contact = Contact(contactName, phoneNumber)
-        selectedContacts.add(contact)
 
         // Update UI code to display contact information
         val contactView: View = layoutInflater.inflate(R.layout.item_emergency_contact, parentLayout, false)
@@ -92,9 +100,8 @@ class EmergencyContactsFragment : Fragment() {
         contactNameTextView.text = contact.displayName
         deleteButton.setOnClickListener {
             // Remove the contact from the list and the view
-            selectedContacts.remove(contact)
+            sharedViewModel.removeContact(contact)
             parentLayout.removeView(contactView)
-            saveEmergencyContacts()
         }
 
         parentLayout.addView(contactView)
@@ -105,11 +112,8 @@ class EmergencyContactsFragment : Fragment() {
         val contact = Contact(displayName, phoneNumber)
 
         // Add the contact if not already present
-        if (!selectedContacts.contains(contact)) {
-            selectedContacts.add(contact)
-            addEmergencyContactView(emergencyContactsList, contact.displayName, contact.phoneNumber)
-            saveEmergencyContacts()
-        }
+        sharedViewModel.addContact(contact)
+
     }
 
     @SuppressLint("Range")
@@ -147,21 +151,6 @@ class EmergencyContactsFragment : Fragment() {
         return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun saveEmergencyContacts() {
-        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putStringSet("emergency_contacts", selectedContacts.map { it.toString() }.toSet())
-        editor.apply()
-    }
-
-    private fun loadEmergencyContacts() {
-        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
-        val contacts: Set<String> = sharedPreferences.getStringSet("emergency_contacts", emptySet()) ?: emptySet()
-        selectedContacts.clear()
-        selectedContacts.addAll(contacts.map { Contact.fromString(it) })
-        selectedContacts.forEach { addEmergencyContactView(emergencyContactsList, it.displayName, it.phoneNumber) }
-    }
-
     private fun saveEmergencyServiceNumber() {
         val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -177,6 +166,7 @@ class EmergencyContactsFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        saveEmergencyServiceNumber()
+        sharedViewModel.setEmergencyServiceNumber(emergencyServiceNumber.text.toString())
     }
+
 }
