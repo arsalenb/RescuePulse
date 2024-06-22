@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import it.unipi.RescuePulse.mobile.model.Contact
 
 class PostSetupActivity : AppCompatActivity() {
 
@@ -36,16 +37,16 @@ class PostSetupActivity : AppCompatActivity() {
         val dob = sharedPreferences.getString("dob", "")
         val weight = sharedPreferences.getInt("weight", 0)
         val emergencyServiceNumber = sharedPreferences.getString("emergency_service_number", "")
-        val emergencyContacts = sharedPreferences.getStringSet("emergency_contacts", emptySet())
+        val emergencyContactsJsonList = sharedPreferences.getString("emergency_contacts", "")
 
         textName.text = "Name: $name"
         textSurname.text = "Surname: $surname"
         textDob.text = "Date of Birth: $dob"
         textWeight.text = "Weight: $weight"
         textEmergencyServiceNumber.text = "Emergency Service Number: $emergencyServiceNumber"
-        println(emergencyContacts)
-        emergencyContacts?.forEach { contact ->
-            addEmergencyContactView(contact)
+
+        Contact.fromJsonList(emergencyContactsJsonList).forEach { contact ->
+            addEmergencyContactView(contact.displayName)
         }
     }
     private fun addEmergencyContactView(contactName: String) {

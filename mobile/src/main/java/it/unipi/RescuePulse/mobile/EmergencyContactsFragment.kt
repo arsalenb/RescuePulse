@@ -150,20 +150,6 @@ class EmergencyContactsFragment : Fragment() {
     private fun isReadContactsPermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
     }
-
-    private fun saveEmergencyServiceNumber() {
-        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("emergency_service_number", emergencyServiceNumber.text.toString())
-        editor.apply()
-    }
-
-    private fun loadEmergencyServiceNumber() {
-        val sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Activity.MODE_PRIVATE)
-        val serviceNumber: String? = sharedPreferences.getString("emergency_service_number", "")
-        emergencyServiceNumber.setText(serviceNumber)
-    }
-
     override fun onPause() {
         super.onPause()
         sharedViewModel.setEmergencyServiceNumber(emergencyServiceNumber.text.toString())
