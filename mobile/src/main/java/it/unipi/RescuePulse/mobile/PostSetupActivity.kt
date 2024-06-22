@@ -43,12 +43,11 @@ class PostSetupActivity : AppCompatActivity() {
         textDob.text = "Date of Birth: $dob"
         textWeight.text = "Weight: $weight"
         textEmergencyServiceNumber.text = "Emergency Service Number: $emergencyServiceNumber"
-println(emergencyContacts)
+        println(emergencyContacts)
         emergencyContacts?.forEach { contact ->
             addEmergencyContactView(contact)
         }
     }
-
     private fun addEmergencyContactView(contactName: String) {
         val contactView = layoutInflater.inflate(R.layout.item_emergency_contact, emergencyContactsList, false)
         val contactNameTextView: TextView = contactView.findViewById(R.id.contact_name)
