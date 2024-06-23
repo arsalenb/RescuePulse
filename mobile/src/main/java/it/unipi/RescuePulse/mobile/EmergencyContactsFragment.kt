@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,6 +78,16 @@ class EmergencyContactsFragment : Fragment() {
         sharedViewModel.emergencyServiceNumber.observe(viewLifecycleOwner) { number ->
             emergencyServiceNumber.setText(number)
         }
+        // Listen for text changes in the emergencyServiceNumber field
+        emergencyServiceNumber.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                sharedViewModel.setEmergencyServiceNumber(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         buttonAddEmergencyContact.setOnClickListener {
             if (isReadContactsPermissionGranted()) {

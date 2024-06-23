@@ -3,6 +3,7 @@ package it.unipi.RescuePulse.mobile
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -40,18 +41,21 @@ class SetupActivity : AppCompatActivity() {
             }
         }.attach()
 
-
         val buttonFinish: Button = findViewById(R.id.button_finish)
         buttonFinish.setOnClickListener {
-            // Save data before navigating to next activity if needed
-            sharedViewModel.saveContacts()
-            sharedViewModel.saveEmergencyServiceNumber()
-            sharedViewModel.savePersonalInformation()
+            if (sharedViewModel.isFormComplete()) {
+                // Save data before navigating to post steup
+                sharedViewModel.saveContacts()
+                sharedViewModel.saveEmergencyServiceNumber()
+                sharedViewModel.savePersonalInformation()
 
-            // Navigate to PostSetupActivity
-            val intent = Intent(this, PostSetupActivity::class.java)
-            startActivity(intent)
-            finish()
+                // Navigate to PostSetupActivity
+                val intent = Intent(this, PostSetupActivity::class.java)
+                startActivity(intent)
+            } else {
+                // Show a message to the user indicating that not all fields are filled
+                Toast.makeText(this, "Please fill in all the fields.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

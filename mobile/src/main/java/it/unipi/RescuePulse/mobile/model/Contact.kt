@@ -26,5 +26,9 @@ data class Contact(val displayName: String, val phoneNumber: String?) {
         fun toJsonList(contacts: MutableList<Contact>): String {
             return contacts.joinToString(";") { it.toString() }
         }
+
+    }
+    override fun toString(): String {
+        return "$displayName, $phoneNumber"
     }
 }

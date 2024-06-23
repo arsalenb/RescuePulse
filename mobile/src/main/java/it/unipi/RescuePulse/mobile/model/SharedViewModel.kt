@@ -101,4 +101,10 @@ class SharedViewModel : ViewModel() {
     fun setEmergencyServiceNumber(number: String) {
         _emergencyServiceNumber.value = number
     }
+
+    fun isFormComplete(): Boolean {
+        val isPersonalInfoPartComplete = !(_name.value.isNullOrEmpty() || _surname.value.isNullOrEmpty() || _dob.value.isNullOrEmpty() || _weight.value == null)
+        val isEmergencyContactsPartComplete = !(_selectedContacts.value.isNullOrEmpty() || _emergencyServiceNumber.value.isNullOrEmpty())
+        return isPersonalInfoPartComplete && isEmergencyContactsPartComplete
+    }
 }
