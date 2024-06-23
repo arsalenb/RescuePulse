@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">Rescue Pulse</string>
+    <string name="gear_button_desc">Settings</string>
+    <string name="listening_for_emergency_notifications">Listening for Emergency Notification ...</string>
+    <string name="app_logo">Rescue Pulse</string>
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="Initiate">Initiate</string>
+    <string name="emergency_service_number">Emergency Service Number</string>
+    <string name="status_icon_desc">Pending</string>
     <string-array name="emergency_services">
         <item>Police</item>
         <item>Fire Department</item>
         <item>Ambulance</item>
     </string-array>
+    <string name="contact_display_format">%1$s %2$s</string>
+
 </resources>

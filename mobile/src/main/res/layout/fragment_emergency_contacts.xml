@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Emergency Service Number"
+        android:text="@string/emergency_service_number"
         android:textColor="#FF0000"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Emergency Contacts"
+        android:text="@string/emergency_contacts"
         android:textColor="#FF0303"
         android:textSize="18sp"
         android:textStyle="bold" />

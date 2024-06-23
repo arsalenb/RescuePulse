@@ -1,55 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/text_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name: "
-        android:textStyle="bold" />
+    <!-- Settings button at the top left -->
 
-    <TextView
-        android:id="@+id/text_surname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Surname: "
-        android:textStyle="bold" />
+    <ImageButton
+        android:id="@+id/settings_button"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
+        android:layout_gravity="start"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/gear_button_desc"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_gear" />
 
-    <TextView
-        android:id="@+id/text_dob"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date of Birth: "
-        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/text_weight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Weight: "
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/text_emergency_service_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Emergency Service Number: "
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Emergency Contacts:"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp" />
-
+    <!-- Emergency contacts label -->
     <LinearLayout
-        android:id="@+id/emergency_contacts_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:layout_height="701dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="#E41414"
+            android:textSize="32sp"
+            android:textStyle="bold|italic" />
+
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="196dp"
+            android:layout_height="164dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/app_logo"
+            android:src="@drawable/ic_app_logo" />
+
+        <!-- Status icon and text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/status_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/listening_for_emergency_notifications"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/status_icon"
+                android:layout_width="30dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/status_icon_desc"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_pending_status" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/emergency_contacts_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/emergency_contacts"
+            android:textColor="#E41414"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- List of emergency contacts -->
+        <LinearLayout
+            android:id="@+id/emergency_contacts_list"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="vertical" />
+
+        <!-- Emergency service number label -->
+        <TextView
+            android:id="@+id/emergency_service_number_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/emergency_service_number"
+            android:textColor="#E41414"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Display emergency service number -->
+        <TextView
+            android:id="@+id/emergency_service_number"
+            android:layout_width="357dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+
+
 </LinearLayout>

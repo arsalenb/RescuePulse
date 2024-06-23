@@ -20,7 +20,7 @@
         android:layout_width="196dp"
         android:layout_height="164dp"
         android:layout_marginTop="20dp"
-        android:contentDescription="App Logo"
+        android:contentDescription="@string/app_logo"
         android:src="@drawable/ic_app_logo" />
 
     <Button
@@ -29,6 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="#E31414"
-        android:text="Initiate"
+        android:text="@string/Initiate"
         android:textColor="#FFFFFF" />
 </LinearLayout>
