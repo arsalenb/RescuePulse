@@ -96,6 +96,7 @@ class PersonalInfoFragment : Fragment() {
         sharedViewModel.setName(nameEditText.text.toString())
         sharedViewModel.setSurname(surnameEditText.text.toString())
         sharedViewModel.setDob(dobEditText.text.toString())
-        sharedViewModel.setWeight(weightEditText.toString().toIntOrNull() ?: 0)
+        println(weightEditText.toString())
+        sharedViewModel.setWeight(weightEditText.text.toString().toIntOrNull() ?: 0)
     }
 }

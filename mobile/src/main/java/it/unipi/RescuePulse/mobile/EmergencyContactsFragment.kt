@@ -33,6 +33,8 @@ class EmergencyContactsFragment : Fragment() {
     private lateinit var emergencyServiceNumber: EditText
 
     private var pendingContactUri: Uri? = null
+    private var isObserverUpdating = false
+
 
     private val pickContactLauncher = registerForActivityResult(ActivityResultContracts.PickContact()) { contactUri: Uri? ->
         contactUri ?: return@registerForActivityResult
@@ -74,21 +76,25 @@ class EmergencyContactsFragment : Fragment() {
             }
         }
 
-        // Load existing emergency service number
         sharedViewModel.emergencyServiceNumber.observe(viewLifecycleOwner) { number ->
+            isObserverUpdating = true
+            val cursorPosition = emergencyServiceNumber.selectionStart
             emergencyServiceNumber.setText(number)
+            emergencyServiceNumber.setSelection(cursorPosition)
+            isObserverUpdating = false
         }
-        // Listen for text changes in the emergencyServiceNumber field
+
         emergencyServiceNumber.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                sharedViewModel.setEmergencyServiceNumber(s.toString())
+                if (!isObserverUpdating) {
+                    sharedViewModel.setEmergencyServiceNumber(s.toString())
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
-
         buttonAddEmergencyContact.setOnClickListener {
             if (isReadContactsPermissionGranted()) {
                 pickContactLauncher.launch(null)
@@ -161,10 +167,6 @@ class EmergencyContactsFragment : Fragment() {
 
     private fun isReadContactsPermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
-    }
-    override fun onPause() {
-        super.onPause()
-        sharedViewModel.setEmergencyServiceNumber(emergencyServiceNumber.text.toString())
     }
 
 }
