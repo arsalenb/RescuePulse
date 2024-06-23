@@ -2,7 +2,6 @@ package it.unipi.RescuePulse.mobile
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -33,8 +32,6 @@ class EmergencyContactsFragment : Fragment() {
     private lateinit var emergencyServiceNumber: EditText
 
     private var pendingContactUri: Uri? = null
-    private var isObserverUpdating = false
-
 
     private val pickContactLauncher = registerForActivityResult(ActivityResultContracts.PickContact()) { contactUri: Uri? ->
         contactUri ?: return@registerForActivityResult
@@ -77,20 +74,17 @@ class EmergencyContactsFragment : Fragment() {
         }
 
         sharedViewModel.emergencyServiceNumber.observe(viewLifecycleOwner) { number ->
-            isObserverUpdating = true
-            val cursorPosition = emergencyServiceNumber.selectionStart
-            emergencyServiceNumber.setText(number)
-            emergencyServiceNumber.setSelection(cursorPosition)
-            isObserverUpdating = false
+
+            if (emergencyServiceNumber.text.toString() != number) {
+                emergencyServiceNumber.setText(number)
+            }
         }
 
         emergencyServiceNumber.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!isObserverUpdating) {
                     sharedViewModel.setEmergencyServiceNumber(s.toString())
-                }
             }
 
             override fun afterTextChanged(s: Editable?) {}

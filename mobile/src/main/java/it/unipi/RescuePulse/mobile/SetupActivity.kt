@@ -44,7 +44,7 @@ class SetupActivity : AppCompatActivity() {
         val buttonFinish: Button = findViewById(R.id.button_finish)
         buttonFinish.setOnClickListener {
             if (sharedViewModel.isFormComplete()) {
-                // Save data before navigating to post steup
+                // Save data before navigating to post step
                 sharedViewModel.saveContacts()
                 sharedViewModel.saveEmergencyServiceNumber()
                 sharedViewModel.savePersonalInformation()

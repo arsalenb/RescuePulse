@@ -1,9 +1,9 @@
 package it.unipi.RescuePulse.mobile
 
-import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +24,7 @@ class PersonalInfoFragment : Fragment() {
     private lateinit var surnameEditText: EditText
     private lateinit var dobEditText: EditText
     private lateinit var weightEditText: EditText
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,20 +45,63 @@ class PersonalInfoFragment : Fragment() {
 
         // Observe the LiveData objects from the SharedViewModel
         sharedViewModel.name.observe(viewLifecycleOwner) { name ->
-            nameEditText.setText(name)
+            if (nameEditText.text.toString() != name) {
+                nameEditText.setText(name)
+            }
         }
 
         sharedViewModel.surname.observe(viewLifecycleOwner) { surname ->
-            surnameEditText.setText(surname)
+            if (surnameEditText.text.toString() != surname) {
+                surnameEditText.setText(surname)
+            }
         }
 
         sharedViewModel.dob.observe(viewLifecycleOwner) { dob ->
-            dobEditText.setText(dob)
+            if (dobEditText.text.toString() != dob) {
+                dobEditText.setText(dob)
+            }
         }
 
         sharedViewModel.weight.observe(viewLifecycleOwner) { weight ->
-            weightEditText.setText(weight.toString())
+            val weightStr = weight.toString()
+            if (weightEditText.text.toString() != weightStr) {
+                weightEditText.setText(weightStr)
+            }
         }
+
+        // Add TextWatchers to EditText fields to update SharedViewModel on text change
+        nameEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                sharedViewModel.setName(s.toString())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        surnameEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                sharedViewModel.setSurname(s.toString())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        dobEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                sharedViewModel.setDob(s.toString())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        weightEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val weight = s.toString().toIntOrNull() ?: 0 // empty doesn't evaluate to 0
+                sharedViewModel.setWeight(weight)
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
         return view
     }
@@ -85,18 +129,5 @@ class PersonalInfoFragment : Fragment() {
         val myFormat = "dd/MM/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
         inputDob.setText(sdf.format(calendar.time))
-    }
-
-    override fun onPause() {
-        super.onPause()
-        savePersonalInformation()
-    }
-
-    private fun savePersonalInformation() {
-        sharedViewModel.setName(nameEditText.text.toString())
-        sharedViewModel.setSurname(surnameEditText.text.toString())
-        sharedViewModel.setDob(dobEditText.text.toString())
-        println(weightEditText.toString())
-        sharedViewModel.setWeight(weightEditText.text.toString().toIntOrNull() ?: 0)
     }
 }
