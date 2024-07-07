@@ -1,8 +1,6 @@
-package it.unipi.RescuePulse.mobile
+package it.unipi.RescuePulse.mobile.setupFragments
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -15,14 +13,12 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import it.unipi.RescuePulse.mobile.model.Contact
 import it.unipi.RescuePulse.mobile.model.SharedViewModel
 import androidx.fragment.app.activityViewModels
-
+import it.unipi.RescuePulse.mobile.R
 
 class EmergencyContactsFragment : Fragment() {
 
@@ -31,34 +27,18 @@ class EmergencyContactsFragment : Fragment() {
     private lateinit var buttonAddEmergencyContact: ImageButton
     private lateinit var emergencyServiceNumber: EditText
 
-    private var pendingContactUri: Uri? = null
-
     private val pickContactLauncher = registerForActivityResult(ActivityResultContracts.PickContact()) { contactUri: Uri? ->
         contactUri ?: return@registerForActivityResult
 
-        // Save the pending contact URI and request permission
-        pendingContactUri = contactUri
-        if (isReadContactsPermissionGranted()) {
-            handlePickedContact(contactUri)
-        } else {
-            requestReadContactsPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
-        }
-    }
-
-    private val requestReadContactsPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-        if (isGranted) {
-            // Permission granted, handle the picked contact
-            pendingContactUri?.let { handlePickedContact(it) }
-        } else {
-            // Permission denied, handle this scenario
-            Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
-        }
+        // Save the pending contact URI and handle it
+        handlePickedContact(contactUri)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
         val view: View = inflater.inflate(R.layout.fragment_emergency_contacts, container, false)
 
         emergencyContactsList = view.findViewById(R.id.emergency_contacts_list)
@@ -74,7 +54,6 @@ class EmergencyContactsFragment : Fragment() {
         }
 
         sharedViewModel.emergencyServiceNumber.observe(viewLifecycleOwner) { number ->
-
             if (emergencyServiceNumber.text.toString() != number) {
                 emergencyServiceNumber.setText(number)
             }
@@ -84,19 +63,15 @@ class EmergencyContactsFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    sharedViewModel.setEmergencyServiceNumber(s.toString())
+                sharedViewModel.setEmergencyServiceNumber(s.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
-        buttonAddEmergencyContact.setOnClickListener {
-            if (isReadContactsPermissionGranted()) {
-                pickContactLauncher.launch(null)
-            } else {
-                requestReadContactsPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
-            }
-        }
 
+        buttonAddEmergencyContact.setOnClickListener {
+            pickContactLauncher.launch(null)
+        }
 
         return view
     }
@@ -125,7 +100,6 @@ class EmergencyContactsFragment : Fragment() {
 
         // Add the contact if not already present
         sharedViewModel.addContact(contact)
-
     }
 
     @SuppressLint("Range")
@@ -158,9 +132,4 @@ class EmergencyContactsFragment : Fragment() {
 
         return Pair(displayName, phoneNumber)
     }
-
-    private fun isReadContactsPermissionGranted(): Boolean {
-        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
-    }
-
 }

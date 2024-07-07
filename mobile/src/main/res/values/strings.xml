@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Rescue Pulse</string>
     <string name="gear_button_desc">Settings</string>
-    <string name="listening_for_emergency_notifications">Listening for Emergency Notification ...</string>
+    <string name="status_no_wearables_connected">No Wearables Connected</string>
+    <string name="status_listening_emergency">Connected, awaiting emergency notification</string>
     <string name="app_logo">Rescue Pulse</string>
     <string name="emergency_contacts">Emergency Contacts</string>
     <string name="Initiate">Initiate</string>

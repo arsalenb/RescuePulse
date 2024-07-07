@@ -1,4 +1,4 @@
-package it.unipi.RescuePulse.mobile
+package it.unipi.RescuePulse.mobile.setupFragments
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

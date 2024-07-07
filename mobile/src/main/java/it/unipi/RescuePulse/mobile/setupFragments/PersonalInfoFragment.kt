@@ -1,4 +1,4 @@
-package it.unipi.RescuePulse.mobile
+package it.unipi.RescuePulse.mobile.setupFragments
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import it.unipi.RescuePulse.mobile.R
 import it.unipi.RescuePulse.mobile.model.SharedViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -63,9 +64,11 @@ class PersonalInfoFragment : Fragment() {
         }
 
         sharedViewModel.weight.observe(viewLifecycleOwner) { weight ->
-            val weightStr = weight.toString()
+            val weightStr = if (weight != 0) weight.toString() else ""
             if (weightEditText.text.toString() != weightStr) {
+                val cursorPosition = weightEditText.selectionStart
                 weightEditText.setText(weightStr)
+                weightEditText.setSelection(cursorPosition.coerceAtMost(weightStr.length))
             }
         }
 
@@ -96,7 +99,8 @@ class PersonalInfoFragment : Fragment() {
 
         weightEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val weight = s.toString().toIntOrNull() ?: 0 // empty doesn't evaluate to 0
+                val weightStr = s.toString()
+                val weight = if (weightStr.isNotEmpty()) weightStr.toIntOrNull() ?: 0 else 0
                 sharedViewModel.setWeight(weight)
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -120,7 +124,6 @@ class PersonalInfoFragment : Fragment() {
             calendar.get(Calendar.DAY_OF_MONTH)
         )
 
-        // Set max date to current date and show calendar view
         datePicker.datePicker.maxDate = System.currentTimeMillis()
         datePicker.show()
     }

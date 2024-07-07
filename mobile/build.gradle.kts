@@ -8,7 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "it.unipi.RescuePulse.mobile"
+        applicationId = "it.unipi.RescuePulse"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -69,5 +69,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.fragment:fragment-ktx:1.4.0")
+    implementation("com.google.android.gms:play-services-wearable:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
 }
