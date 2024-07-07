@@ -23,7 +23,7 @@
     <!-- Emergency contacts label -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="701dp"
+        android:layout_height="659dp"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp">
@@ -40,7 +40,7 @@
         <ImageView
             android:id="@+id/app_logo"
             android:layout_width="196dp"
-            android:layout_height="164dp"
+            android:layout_height="107dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/app_logo"
             android:src="@drawable/ic_app_logo" />
@@ -48,19 +48,21 @@
         <!-- Status icon and text -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="112dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="3dp">
 
             <TextView
                 android:id="@+id/status_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="43dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
-                android:text="@string/listening_for_emergency_notifications"
+                android:text="@string/status_no_wearables_connected"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/status_icon"
@@ -69,7 +71,7 @@
                 android:layout_marginTop="8dp"
                 android:contentDescription="@string/status_icon_desc"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_pending_status" />
+                android:src="@drawable/idle_indicator" />
 
         </LinearLayout>
 
@@ -87,12 +89,15 @@
         <LinearLayout
             android:id="@+id/emergency_contacts_list"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="104dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:orientation="vertical" />
 
         <!-- Emergency service number label -->
+
+        <!-- Display emergency service number -->
+
         <TextView
             android:id="@+id/emergency_service_number_label"
             android:layout_width="wrap_content"
@@ -103,7 +108,6 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <!-- Display emergency service number -->
         <TextView
             android:id="@+id/emergency_service_number"
             android:layout_width="357dp"
@@ -113,7 +117,6 @@
             android:textSize="18sp" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>
